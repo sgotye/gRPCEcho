@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/sgotye/gRPCEcho/pingpong"
+	"google.golang.org/grpc"
 	"log"
 	"net"
 	"sync"
-	"google.golang.org/grpc"
-	"github.com/sgotye/gRPCEcho/pingpong"
 )
 
 const (
@@ -15,10 +15,10 @@ const (
 )
 
 type server struct {
-	mu 			 sync.RWMutex
+	mu           sync.RWMutex
 	countClients uint32
 	clientId     uint32
-	idChan		 chan uint32
+	idChan       chan uint32
 	pingpong.UnimplementedPingPongServer
 }
 
@@ -38,13 +38,13 @@ func (s *server) delClient() {
 	s.mu.Unlock()
 }
 
-func (s *server) SendPing(ctx context.Context, in *pingpong.Ping) (*pingpong.Pong, error)  {
+func (s *server) SendPing(ctx context.Context, in *pingpong.Ping) (*pingpong.Pong, error) {
 	var response string
 	s.addClient()
 	defer s.delClient()
 	log.Printf("Received ping.")
 
-	currentId := <- s.idChan
+	currentId := <-s.idChan
 	s.mu.RLock()
 	currentClentsNum := s.countClients
 	s.mu.RUnlock()

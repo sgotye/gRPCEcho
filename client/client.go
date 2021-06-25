@@ -2,14 +2,14 @@ package main
 
 import (
 	"context"
+	"github.com/sgotye/gRPCEcho/pingpong"
+	"google.golang.org/grpc"
 	"log"
 	"time"
-	"google.golang.org/grpc"
-	"github.com/sgotye/gRPCEcho/pingpong"
 )
 
 const (
-	address     = "localhost:8080"
+	address = "localhost:8080"
 )
 
 func main() {
